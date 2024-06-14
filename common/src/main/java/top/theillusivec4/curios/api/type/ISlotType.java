@@ -80,15 +80,6 @@ public interface ISlotType extends Comparable<ISlotType> {
   }
 
   /**
-   * @deprecated Check if {@link ISlotType#getSize()} returns 0
-   */
-  @Deprecated(forRemoval = true)
-  @ApiStatus.ScheduledForRemoval(inVersion = "1.21")
-  default boolean isLocked() {
-    return this.getSize() == 0;
-  }
-
-  /**
    * @deprecated Use {@link ISlotType#getOrder()}
    */
   @Deprecated(since = "1.20.1", forRemoval = true)

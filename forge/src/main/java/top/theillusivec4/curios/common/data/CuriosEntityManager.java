@@ -87,7 +87,7 @@ public class CuriosEntityManager extends SimpleJsonResourceReloadListener {
               "curios/entities",
               (resourceLocation, inputStreamIoSupplier) -> {
                 String path = resourceLocation.getPath();
-                ResourceLocation rl = new ResourceLocation(namespace,
+                ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(namespace,
                     path.substring("curios/entities/".length(), path.length() - ".json".length()));
                 JsonElement el = pObject.get(rl);
                 if (el != null) {
@@ -176,7 +176,7 @@ public class CuriosEntityManager extends SimpleJsonResourceReloadListener {
 
       if (tag1 instanceof CompoundTag entity) {
         EntityType<?> type =
-            ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entity.getString("Entity")));
+            ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.fromNamespaceAndPath(entity.getString("Entity")));
 
         if (type != null) {
           ListTag slots = entity.getList("Slots", Tag.TAG_STRING);
@@ -217,11 +217,11 @@ public class CuriosEntityManager extends SimpleJsonResourceReloadListener {
       if (entity.startsWith("#")) {
 
         for (EntityType<?> entityType : tagManager.getTag(
-            tagManager.createTagKey(new ResourceLocation(entity)))) {
+            tagManager.createTagKey(ResourceLocation.fromNamespaceAndPath(entity)))) {
           toAdd.add(entityType);
         }
       } else {
-        EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entity));
+        EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.fromNamespaceAndPath(entity));
 
         if (type != null) {
           toAdd.add(type);

@@ -32,6 +32,6 @@ public class CuriosCapability {
       CapabilityManager.get(new CapabilityToken<>() {
       });
 
-  public static final ResourceLocation ID_INVENTORY = new ResourceLocation(CuriosApi.MODID,
+  public static final ResourceLocation ID_INVENTORY = ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID,
       "inventory");
 }

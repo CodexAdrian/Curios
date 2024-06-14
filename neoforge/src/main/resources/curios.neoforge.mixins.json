@@ -11,8 +11,7 @@
     "MixinLivingEntity",
     "MixinNbtPredicate",
     "MixinPiglinAi",
-    "MixinPowderSnowBlock",
-    "MixinShearsItem"
+    "MixinPowderSnowBlock"
   ],
   "minVersion": "0.8"
 }

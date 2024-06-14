@@ -21,13 +21,10 @@ package top.theillusivec4.curiostest;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import javax.annotation.Nonnull;
 import net.minecraft.core.Holder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -75,6 +72,11 @@ import top.theillusivec4.curiostest.common.item.AmuletItem;
 import top.theillusivec4.curiostest.data.CuriosGenerator;
 import top.theillusivec4.curiostest.data.CuriosTestProvider;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
 @Mod(CuriosTest.MODID)
 public class CuriosTest {
 
@@ -90,7 +92,7 @@ public class CuriosTest {
     eventBus.addListener(this::registerCaps);
     eventBus.addListener(this::gatherData);
     NeoForge.EVENT_BUS.addListener(this::attributeModifier);
-    CuriosApi.registerCurioPredicate(new ResourceLocation(MODID, "test"),
+    CuriosApi.registerCurioPredicate(ResourceLocation.fromNamespaceAndPath(MODID, "test"),
         slotResult -> slotResult.stack().getItem() == Items.OAK_BOAT);
   }
 
@@ -121,8 +123,8 @@ public class CuriosTest {
         if (!livingEntity.level().isClientSide() && livingEntity.tickCount % 20 == 0) {
           livingEntity
               .addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, -1, true, true));
-          stack.hurtAndBreak(1, livingEntity.getRandom(), livingEntity,
-              () -> CuriosApi.broadcastCurioBreakEvent(slotContext));
+          stack.hurtAndBreak(1, (ServerLevel) livingEntity.level(), livingEntity,
+              (stack) -> CuriosApi.broadcastCurioBreakEvent(slotContext));
         }
       }
     }, CuriosTestRegistry.CROWN.get());
@@ -146,25 +148,25 @@ public class CuriosTest {
       @Override
       public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
           SlotContext slotContext,
-          UUID uuid) {
+          ResourceLocation id) {
         Multimap<Holder<Attribute>, AttributeModifier> atts = LinkedHashMultimap.create();
         atts.put(Attributes.MOVEMENT_SPEED,
-            new AttributeModifier(uuid, CuriosTest.MODID + ":speed_bonus", 0.1,
+            new AttributeModifier(id.withSuffix("speed_bonus"), 0.1,
                 AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         atts.put(Attributes.ARMOR,
-            new AttributeModifier(uuid, CuriosTest.MODID + ":armor_bonus", 2,
+            new AttributeModifier(id.withSuffix("armor_bonus"), 2,
                 AttributeModifier.Operation.ADD_VALUE));
         atts.put(Attributes.KNOCKBACK_RESISTANCE,
-            new AttributeModifier(uuid, CuriosTest.MODID + ":knockback_resist", 0.2,
+            new AttributeModifier(id.withSuffix("knockback_resist"), 0.2,
                 AttributeModifier.Operation.ADD_VALUE));
-        CuriosApi.addSlotModifier(atts, "ring", uuid, 1, AttributeModifier.Operation.ADD_VALUE);
+        CuriosApi.addSlotModifier(atts, id.withSuffix("ring"), 1, AttributeModifier.Operation.ADD_VALUE);
 //        CuriosApi.addSlotModifier(atts, "curio", uuid, -1, AttributeModifier.Operation.ADDITION);
         return atts;
       }
 
       @Nonnull
       @Override
-      public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel,
+      public DropRule getDropRule(SlotContext slotContext, DamageSource source, /*int lootingLevel,*/
                                   boolean recentlyHit) {
         return DropRule.ALWAYS_KEEP;
       }
@@ -206,13 +208,13 @@ public class CuriosTest {
       @Override
       public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
           SlotContext slotContext,
-          UUID uuid) {
+          ResourceLocation slotId) {
         Multimap<Holder<Attribute>, AttributeModifier> atts = LinkedHashMultimap.create();
         atts.put(Attributes.ATTACK_DAMAGE,
-            new AttributeModifier(uuid, CuriosTest.MODID + ":attack_damage_bonus", 4,
+            new AttributeModifier(slotId.withSuffix("attack_damage_bonus"), 4,
                 AttributeModifier.Operation.ADD_VALUE));
-        CuriosApi.addSlotModifier(atts, "necklace", uuid, 2, AttributeModifier.Operation.ADD_VALUE);
-        CuriosApi.addSlotModifier(atts, "ring", uuid, -1, AttributeModifier.Operation.ADD_VALUE);
+        CuriosApi.addSlotModifier(atts, slotId.withSuffix("necklace"), 2, AttributeModifier.Operation.ADD_VALUE);
+        CuriosApi.addSlotModifier(atts, slotId.withSuffix("ring"), -1, AttributeModifier.Operation.ADD_VALUE);
         return atts;
       }
     }, CuriosTestRegistry.KNUCKLES.get());
@@ -222,10 +224,10 @@ public class CuriosTest {
 
     if (evt.getSlotContext().identifier().equals("curio")) {
       evt.clearModifiers();
-      evt.addModifier(Attributes.MAX_HEALTH, new AttributeModifier(evt.getUuid(), "test", 10.0d,
+      evt.addModifier(Attributes.MAX_HEALTH, new AttributeModifier(evt.getId(), 10.0d,
           AttributeModifier.Operation.ADD_VALUE));
       evt.addModifier(SlotAttribute.getOrCreate("ring"),
-          new AttributeModifier(evt.getUuid(), "test", 1.0d,
+          new AttributeModifier(evt.getId(), 1.0d,
               AttributeModifier.Operation.ADD_VALUE));
     }
   }

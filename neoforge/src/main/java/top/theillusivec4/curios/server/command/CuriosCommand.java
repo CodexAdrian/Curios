@@ -166,9 +166,11 @@ public class CuriosCommand {
                                           String slot, int index, ItemInput item, int count)
       throws CommandSyntaxException {
     ItemStack stack = item.createItemStack(count, false);
-    CuriosApi.getCuriosHelper().setEquippedCurio(player, slot, index, stack);
-    source.sendSuccess(() -> Component.translatable("commands.curios.replace.success", slot,
-        player.getDisplayName(), stack.getDisplayName()), true);
+    CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+      handler.setEquippedCurio(slot, index, stack);
+      source.sendSuccess(() -> Component.translatable("commands.curios.replace.success", slot,
+              player.getDisplayName(), stack.getDisplayName()), true);
+    });
     return Command.SINGLE_SUCCESS;
   }
 
@@ -183,7 +185,11 @@ public class CuriosCommand {
 
   private static int growSlotForPlayer(CommandSourceStack source, ServerPlayer playerMP,
                                        String slot, int amount) {
-    CuriosApi.getSlotHelper().growSlotType(slot, amount, playerMP);
+    CuriosApi.getCuriosInventory(playerMP).ifPresent(handler -> {
+      if (amount > 0) {
+        handler.getStacksHandler(slot).ifPresent(stackHandler -> stackHandler.grow(amount));
+      }
+    });
     source.sendSuccess(() -> Component.translatable("commands.curios.add.success", amount, slot,
         playerMP.getDisplayName()), true);
     return Command.SINGLE_SUCCESS;
@@ -191,7 +197,11 @@ public class CuriosCommand {
 
   private static int shrinkSlotForPlayer(CommandSourceStack source, ServerPlayer playerMP,
                                          String slot, int amount) {
-    CuriosApi.getSlotHelper().shrinkSlotType(slot, amount, playerMP);
+    CuriosApi.getCuriosInventory(playerMP).ifPresent(handler -> {
+      if (amount > 0) {
+        handler.getStacksHandler(slot).ifPresent(stackHandler -> stackHandler.shrink(amount));
+      }
+    });
     source.sendSuccess(() -> Component.translatable("commands.curios.remove.success", amount, slot,
         playerMP.getDisplayName()), true);
     return Command.SINGLE_SUCCESS;
@@ -200,7 +210,7 @@ public class CuriosCommand {
   private static int dropSlotsForPlayer(CommandSourceStack source, ServerPlayer playerMP,
                                         String slot) {
 
-    CuriosApi.getCuriosHelper().getCuriosHandler(playerMP).ifPresent(handler -> {
+    CuriosApi.getCuriosInventory(playerMP).ifPresent(handler -> {
       Map<String, ICurioStacksHandler> curios = handler.getCurios();
 
       if (!slot.isEmpty() && curios.get(slot) != null) {
@@ -244,7 +254,7 @@ public class CuriosCommand {
   private static int clearSlotsForPlayer(CommandSourceStack source, ServerPlayer playerMP,
                                          String slot) {
 
-    CuriosApi.getCuriosHelper().getCuriosHandler(playerMP).ifPresent(handler -> {
+    CuriosApi.getCuriosInventory(playerMP).ifPresent(handler -> {
       Map<String, ICurioStacksHandler> curios = handler.getCurios();
 
       if (!slot.isEmpty() && curios.get(slot) != null) {
@@ -268,7 +278,7 @@ public class CuriosCommand {
   }
 
   private static int resetSlotsForPlayer(CommandSourceStack source, ServerPlayer playerMP) {
-    CuriosApi.getCuriosHelper().getCuriosHandler(playerMP).ifPresent(handler -> {
+    CuriosApi.getCuriosInventory(playerMP).ifPresent(handler -> {
       handler.reset();
       PacketDistributor.sendToPlayersTrackingEntityAndSelf(playerMP,
           new SPacketSyncCurios(playerMP.getId(), handler.getCurios()));

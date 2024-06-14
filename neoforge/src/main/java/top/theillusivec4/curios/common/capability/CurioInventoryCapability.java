@@ -39,6 +39,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -407,10 +408,10 @@ public class CurioInventoryCapability implements ICuriosItemHandler {
   }
 
   @Override
-  public void addTransientSlotModifier(String slot, UUID uuid, String name, double amount,
+  public void addTransientSlotModifier(String slot, ResourceLocation id, double amount,
                                        AttributeModifier.Operation operation) {
     Multimap<String, AttributeModifier> map = LinkedHashMultimap.create();
-    map.put(slot, new AttributeModifier(uuid, name, amount, operation));
+    map.put(slot, new AttributeModifier(id, amount, operation));
     this.addTransientSlotModifiers(map);
   }
 
@@ -431,10 +432,10 @@ public class CurioInventoryCapability implements ICuriosItemHandler {
   }
 
   @Override
-  public void addPermanentSlotModifier(String slot, UUID uuid, String name, double amount,
+  public void addPermanentSlotModifier(String slot, ResourceLocation id, double amount,
                                        AttributeModifier.Operation operation) {
     Multimap<String, AttributeModifier> map = LinkedHashMultimap.create();
-    map.put(slot, new AttributeModifier(uuid, name, amount, operation));
+    map.put(slot, new AttributeModifier(id, amount, operation));
     this.addPermanentSlotModifiers(map);
   }
 
@@ -455,9 +456,9 @@ public class CurioInventoryCapability implements ICuriosItemHandler {
   }
 
   @Override
-  public void removeSlotModifier(String slot, UUID uuid) {
+  public void removeSlotModifier(String slot, ResourceLocation id) {
     Multimap<String, AttributeModifier> map = LinkedHashMultimap.create();
-    map.put(slot, new AttributeModifier(uuid, "", 0, AttributeModifier.Operation.ADD_VALUE));
+    map.put(slot, new AttributeModifier(id, 0, AttributeModifier.Operation.ADD_VALUE));
     this.removeSlotModifiers(map);
   }
 
@@ -504,9 +505,9 @@ public class CurioInventoryCapability implements ICuriosItemHandler {
           if (!stack.isEmpty()) {
             SlotContext slotContext = new SlotContext(id, this.getWearer(), i, false,
                 renderStates.size() > i && renderStates.get(i));
-            UUID uuid = CuriosApi.getSlotUuid(slotContext);
+            ResourceLocation slotId = CuriosApi.getSlotId(slotContext);
             Multimap<Holder<Attribute>, AttributeModifier> map =
-                CuriosApi.getAttributeModifiers(slotContext, uuid, stack);
+                CuriosApi.getAttributeModifiers(slotContext, slotId, stack);
 
             for (Holder<Attribute> attribute : map.keySet()) {
 

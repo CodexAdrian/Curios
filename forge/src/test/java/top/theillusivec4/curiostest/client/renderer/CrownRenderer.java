@@ -21,7 +21,7 @@ import top.theillusivec4.curiostest.client.model.CrownModel;
 
 public class CrownRenderer<L extends LivingEntity> implements ICurioRenderer {
 
-  private static final ResourceLocation CROWN_TEXTURE = new ResourceLocation(CuriosTest.MODID,
+  private static final ResourceLocation CROWN_TEXTURE = ResourceLocation.fromNamespaceAndPath(CuriosTest.MODID,
       "textures/entity/crown.png");
   private final CrownModel<L> model;
 

@@ -57,7 +57,7 @@ public class SPacketSetIcons {
     Map<String, ResourceLocation> map = new HashMap<>();
 
     for (int i = 0; i < entrySize; i++) {
-      map.put(buf.readUtf(), new ResourceLocation(buf.readUtf()));
+      map.put(buf.readUtf(), ResourceLocation.fromNamespaceAndPath(buf.readUtf()));
     }
     return new SPacketSetIcons(map);
   }

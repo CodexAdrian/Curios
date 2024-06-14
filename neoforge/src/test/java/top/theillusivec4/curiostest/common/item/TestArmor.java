@@ -3,6 +3,7 @@ package top.theillusivec4.curiostest.common.item;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
@@ -13,7 +14,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 
 public class TestArmor extends ArmorItem {
 
-  private static final UUID ARMOR_UUID = UUID.fromString("26f348df-ffb8-48cc-9664-310ac8e2e1cf");
+  private static final ResourceLocation ARMOR_UUID = ResourceLocation.fromNamespaceAndPath("curios", "armor_modifier");
 
   public TestArmor(Holder<ArmorMaterial> pMaterial, Type pType, Properties pProperties) {
     super(pMaterial, pType, pProperties);

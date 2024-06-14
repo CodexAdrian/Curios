@@ -48,17 +48,17 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 public class DropRulesEvent extends LivingEvent {
 
   private final DamageSource source;
-  private final int lootingLevel;
+  private final int lootingLevel = -1;
   private final boolean recentlyHit;
   private final ICuriosItemHandler curioHandler; // Curio handler for the entity
   private final List<Tuple<Predicate<ItemStack>, DropRule>> overrides = new ArrayList<>();
   // List of drop rule overrides
 
   public DropRulesEvent(LivingEntity entity, ICuriosItemHandler handler, DamageSource source,
-                        int lootingLevel, boolean recentlyHit) {
+                        /*int lootingLevel, */boolean recentlyHit) {
     super(entity);
     this.source = source;
-    this.lootingLevel = lootingLevel;
+//    this.lootingLevel = lootingLevel;
     this.recentlyHit = recentlyHit;
     this.curioHandler = handler;
   }

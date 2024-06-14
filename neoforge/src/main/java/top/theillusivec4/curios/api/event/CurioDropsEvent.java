@@ -45,16 +45,16 @@ public class CurioDropsEvent extends LivingEvent implements ICancellableEvent {
 
   private final DamageSource source;
   private final Collection<ItemEntity> drops;
-  private final int lootingLevel;
+  private final int lootingLevel = -1;
   private final boolean recentlyHit;
   private final ICuriosItemHandler curioHandler; // Curio handler for the entity
 
   public CurioDropsEvent(LivingEntity entity, ICuriosItemHandler handler, DamageSource source,
-                         Collection<ItemEntity> drops, int lootingLevel, boolean recentlyHit) {
+                         Collection<ItemEntity> drops, /*int lootingLevel, */boolean recentlyHit) {
     super(entity);
     this.source = source;
     this.drops = drops;
-    this.lootingLevel = lootingLevel;
+//    this.lootingLevel = lootingLevel;
     this.recentlyHit = recentlyHit;
     this.curioHandler = handler;
   }

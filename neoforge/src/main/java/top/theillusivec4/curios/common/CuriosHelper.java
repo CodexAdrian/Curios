@@ -121,41 +121,6 @@ public class CuriosHelper implements ICuriosHelper {
         .orElse(Optional.empty());
   }
 
-  @Nonnull
-  @Override
-  public Optional<ImmutableTriple<String, Integer, ItemStack>> findEquippedCurio(Item item,
-                                                                                 @Nonnull
-                                                                                 final LivingEntity livingEntity) {
-    return findEquippedCurio((stack) -> stack.getItem() == item, livingEntity);
-  }
-
-  @Nonnull
-  @Override
-  public Optional<ImmutableTriple<String, Integer, ItemStack>> findEquippedCurio(
-      Predicate<ItemStack> filter, @Nonnull final LivingEntity livingEntity) {
-
-    ImmutableTriple<String, Integer, ItemStack> result = getCuriosHandler(livingEntity)
-        .map(handler -> {
-          Map<String, ICurioStacksHandler> curios = handler.getCurios();
-
-          for (String id : curios.keySet()) {
-            ICurioStacksHandler stacksHandler = curios.get(id);
-            IDynamicStackHandler stackHandler = stacksHandler.getStacks();
-
-            for (int i = 0; i < stackHandler.getSlots(); i++) {
-              ItemStack stack = stackHandler.getStackInSlot(i);
-
-              if (!stack.isEmpty() && filter.test(stack)) {
-                return new ImmutableTriple<>(id, i, stack);
-              }
-            }
-          }
-          return new ImmutableTriple<>("", 0, ItemStack.EMPTY);
-        }).orElse(new ImmutableTriple<>("", 0, ItemStack.EMPTY));
-
-    return result.getLeft().isEmpty() ? Optional.empty() : Optional.of(result);
-  }
-
   @Override
   public boolean isStackValid(SlotContext slotContext, ItemStack stack) {
     return CuriosApi.isStackValid(slotContext, stack);
@@ -168,16 +133,6 @@ public class CuriosHelper implements ICuriosHelper {
 
   @Override
   public void setBrokenCurioConsumer(Consumer<SlotContext> consumer) {
-    // NO-OP
-  }
-
-  @Override
-  public void onBrokenCurio(String id, int index, LivingEntity damager) {
-    CuriosApi.broadcastCurioBreakEvent(new SlotContext(id, damager, index, false, true));
-  }
-
-  @Override
-  public void setBrokenCurioConsumer(TriConsumer<String, Integer, LivingEntity> consumer) {
     // NO-OP
   }
 }

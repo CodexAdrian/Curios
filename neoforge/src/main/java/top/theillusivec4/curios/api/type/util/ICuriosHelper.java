@@ -132,33 +132,6 @@ public interface ICuriosHelper {
   boolean isStackValid(SlotContext slotContext, ItemStack stack);
 
   /**
-   * @deprecated See {@link ICuriosItemHandler#findFirstCurio(Item)}
-   */
-  @Nonnull
-  @Deprecated(forRemoval = true)
-  @ApiStatus.ScheduledForRemoval(inVersion = "1.21")
-  Optional<ImmutableTriple<String, Integer, ItemStack>> findEquippedCurio(Item item,
-                                                                          @Nonnull
-                                                                          LivingEntity livingEntity);
-
-  /**
-   * @deprecated Use {@link ICuriosItemHandler#findFirstCurio(Predicate)}
-   */
-  @Nonnull
-  @Deprecated(forRemoval = true)
-  @ApiStatus.ScheduledForRemoval(inVersion = "1.21")
-  Optional<ImmutableTriple<String, Integer, ItemStack>> findEquippedCurio(
-      Predicate<ItemStack> filter, @Nonnull LivingEntity livingEntity);
-
-
-  /**
-   * @deprecated See {@link top.theillusivec4.curios.api.CuriosApi#broadcastCurioBreakEvent(SlotContext)}
-   */
-  @Deprecated(forRemoval = true)
-  @ApiStatus.ScheduledForRemoval(inVersion = "1.21")
-  void onBrokenCurio(String id, int index, LivingEntity damager);
-
-  /**
    * @deprecated See {@link top.theillusivec4.curios.api.CuriosApi#broadcastCurioBreakEvent(SlotContext)}
    */
   @Deprecated(since = "1.20.1", forRemoval = true)
@@ -172,10 +145,4 @@ public interface ICuriosHelper {
   @ApiStatus.ScheduledForRemoval(inVersion = "1.22")
   void setBrokenCurioConsumer(Consumer<SlotContext> consumer);
 
-  /**
-   * @deprecated Moved to internal code and removed from the API
-   */
-  @Deprecated(forRemoval = true)
-  @ApiStatus.ScheduledForRemoval(inVersion = "1.21")
-  void setBrokenCurioConsumer(TriConsumer<String, Integer, LivingEntity> consumer);
 }

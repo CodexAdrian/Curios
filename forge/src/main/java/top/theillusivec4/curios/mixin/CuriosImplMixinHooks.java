@@ -257,7 +257,7 @@ public class CuriosImplMixinHooks {
     ResourceLocation rl;
 
     if (attribute.value() instanceof SlotAttribute wrapper) {
-      rl = new ResourceLocation("curios:" + wrapper.getIdentifier());
+      rl = ResourceLocation.fromNamespaceAndPath("curios:" + wrapper.getIdentifier());
     } else {
       rl = BuiltInRegistries.ATTRIBUTE.getKey(attribute.value());
     }
@@ -327,13 +327,13 @@ public class CuriosImplMixinHooks {
   }
 
   static {
-    registerCurioPredicate(new ResourceLocation(CuriosApi.MODID, "all"), (slotResult) -> true);
-    registerCurioPredicate(new ResourceLocation(CuriosApi.MODID, "none"),
+    registerCurioPredicate(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "all"), (slotResult) -> true);
+    registerCurioPredicate(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "none"),
         (slotResult) -> false);
-    registerCurioPredicate(new ResourceLocation(CuriosApi.MODID, "tag"), (slotResult) -> {
+    registerCurioPredicate(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "tag"), (slotResult) -> {
       String id = slotResult.slotContext().identifier();
-      TagKey<Item> tag1 = ItemTags.create(new ResourceLocation(CuriosApi.MODID, id));
-      TagKey<Item> tag2 = ItemTags.create(new ResourceLocation(CuriosApi.MODID, "curio"));
+      TagKey<Item> tag1 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, id));
+      TagKey<Item> tag2 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "curio"));
       ItemStack stack = slotResult.stack();
       return stack.is(tag1) || stack.is(tag2);
     });

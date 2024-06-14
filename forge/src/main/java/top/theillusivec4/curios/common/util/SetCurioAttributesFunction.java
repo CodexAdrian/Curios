@@ -86,7 +86,7 @@ public class SetCurioAttributesFunction extends LootItemConditionalFunction {
 
   public static void register() {
     TYPE = Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE,
-        new ResourceLocation(CuriosApi.MODID, "set_curio_attributes"),
+        ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "set_curio_attributes"),
         new LootItemFunctionType<>(CODEC));
   }
 
@@ -159,7 +159,7 @@ public class SetCurioAttributesFunction extends LootItemConditionalFunction {
         ResourceLocation rl;
 
         if (value.value() instanceof SlotAttribute wrapper) {
-          rl = new ResourceLocation(CuriosApi.MODID, wrapper.getIdentifier());
+          rl = ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, wrapper.getIdentifier());
         } else {
           rl = BuiltInRegistries.ATTRIBUTE.getKey(value.value());
         }

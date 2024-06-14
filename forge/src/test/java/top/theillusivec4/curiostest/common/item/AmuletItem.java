@@ -46,7 +46,7 @@ import top.theillusivec4.curiostest.client.CuriosLayerDefinitions;
 import top.theillusivec4.curiostest.client.model.AmuletModel;
 
 public class AmuletItem extends Item implements ICurioItem, ICurioRenderer {
-  private static final ResourceLocation AMULET_TEXTURE = new ResourceLocation(CuriosTest.MODID,
+  private static final ResourceLocation AMULET_TEXTURE = ResourceLocation.fromNamespaceAndPath(CuriosTest.MODID,
       "textures/entity/amulet.png");
   private Object model;
 

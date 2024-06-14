@@ -20,7 +20,7 @@ import top.theillusivec4.curiostest.client.model.KnucklesModel;
 
 public class KnucklesRenderer implements ICurioRenderer {
 
-  private static final ResourceLocation KNUCKLES_TEXTURE = new ResourceLocation(CuriosTest.MODID,
+  private static final ResourceLocation KNUCKLES_TEXTURE = ResourceLocation.fromNamespaceAndPath(CuriosTest.MODID,
       "textures/entity/knuckles.png");
 
   private final KnucklesModel model;

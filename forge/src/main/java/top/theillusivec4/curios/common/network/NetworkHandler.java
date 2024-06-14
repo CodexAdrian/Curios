@@ -57,7 +57,7 @@ public class NetworkHandler {
 
   public static void register() {
 
-    INSTANCE = ChannelBuilder.named(new ResourceLocation(CuriosConstants.MOD_ID, "main"))
+    INSTANCE = ChannelBuilder.named(ResourceLocation.fromNamespaceAndPath(CuriosConstants.MOD_ID, "main"))
         .networkProtocolVersion(PTC_VERSION)
         .clientAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION))
         .serverAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION)).simpleChannel();

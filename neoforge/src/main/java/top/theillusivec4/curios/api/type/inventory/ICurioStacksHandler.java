@@ -21,15 +21,15 @@
 package top.theillusivec4.curios.api.type.inventory;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import top.theillusivec4.curios.api.type.capability.ICurio;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio;
 
 public interface ICurioStacksHandler {
 
@@ -132,7 +132,7 @@ public interface ICurioStacksHandler {
    *
    * @return A map of modifiers with the UUID as keys and {@link AttributeModifier} as values
    */
-  Map<UUID, AttributeModifier> getModifiers();
+  Map<ResourceLocation, AttributeModifier> getModifiers();
 
   /**
    * Retrieves all the permanent slot modifiers on the handler.
@@ -181,7 +181,7 @@ public interface ICurioStacksHandler {
    *
    * @param uuid The UUID of the modifier to remove
    */
-  void removeModifier(UUID uuid);
+  void removeModifier(ResourceLocation id);
 
   /**
    * Removes all the slot modifiers on the handler.

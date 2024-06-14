@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -95,10 +96,10 @@ public class ItemizedCurioCapability implements ICurio {
 
   @Nonnull
   @Override
-  public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel,
+  public DropRule getDropRule(SlotContext slotContext, DamageSource source, /*int lootingLevel,*/
                               boolean recentlyHit) {
     return this.curioItem
-        .getDropRule(slotContext, source, lootingLevel, recentlyHit, this.getStack());
+        .getDropRule(slotContext, source, /*lootingLevel, */recentlyHit, this.getStack());
   }
 
   @Override
@@ -120,8 +121,8 @@ public class ItemizedCurioCapability implements ICurio {
 
   @Override
   public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
-      SlotContext slotContext, UUID uuid) {
-    return this.curioItem.getAttributeModifiers(slotContext, uuid, this.getStack());
+      SlotContext slotContext, ResourceLocation id) {
+    return this.curioItem.getAttributeModifiers(slotContext, id, this.getStack());
   }
 
   @Override

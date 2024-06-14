@@ -23,6 +23,9 @@ package top.theillusivec4.curios.api;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.logging.LogUtils;
+
+import java.awt.*;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +33,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -263,7 +267,7 @@ public final class CuriosApi {
    * @return A map of attribute modifiers
    */
   public static Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
-      SlotContext slotContext, UUID uuid, ItemStack stack) {
+      SlotContext slotContext, ResourceLocation id, ItemStack stack) {
     apiError();
     return HashMultimap.create();
   }
@@ -272,14 +276,12 @@ public final class CuriosApi {
    * Adds a slot modifier to a specified attribute map.
    *
    * @param map        A {@link Multimap} of attributes to attribute modifiers
-   * @param identifier The identifier of the slot to add the modifier onto
-   * @param uuid       A UUID associated with the modifier
+   * @param id         The ID associated with the modifier (Needs to be unique)
    * @param amount     The amount of the modifier
    * @param operation  The operation of the modifier
    */
   public static void addSlotModifier(Multimap<Holder<Attribute>, AttributeModifier> map,
-                                     String identifier, UUID uuid, double amount,
-                                     AttributeModifier.Operation operation) {
+                                     ResourceLocation id, double amount, AttributeModifier.Operation operation) {
     apiError();
   }
 
@@ -287,16 +289,13 @@ public final class CuriosApi {
    * Adds a slot modifier to an ItemStack's tag data.
    *
    * @param stack      The ItemStack to add the modifier to
-   * @param identifier The identifier of the slot to add the modifier onto
-   * @param name       The name for the modifier
-   * @param uuid       A UUID associated with the modifier
+   * @param id         The ID associated with the modifier (Needs to be unique)
    * @param amount     The amount of the modifier
    * @param operation  The operation of the modifier
    * @param slot       The slot that the ItemStack provides the modifier from
    */
-  public static void addSlotModifier(ItemStack stack, String identifier, String name, UUID uuid,
-                                     double amount, AttributeModifier.Operation operation,
-                                     String slot) {
+  public static void addSlotModifier(ItemStack stack, ResourceLocation id, double amount,
+                                     AttributeModifier.Operation operation, String slot) {
     apiError();
   }
 
@@ -305,13 +304,13 @@ public final class CuriosApi {
    *
    * @param itemAttributeModifiers A {@link ItemAttributeModifiers} instance
    * @param identifier             The identifier of the slot to add the modifier onto
-   * @param uuid                   A UUID associated with the modifier
+   * @param id                     The unique id associated with the modifier
    * @param amount                 The amount of the modifier
    * @param operation              The operation of the modifier
    * @param slotGroup              The slot to provide the modifier from
    */
   public static ItemAttributeModifiers withSlotModifier(
-      ItemAttributeModifiers itemAttributeModifiers, String identifier, UUID uuid, double amount,
+      ItemAttributeModifiers itemAttributeModifiers, String identifier, ResourceLocation id, double amount,
       AttributeModifier.Operation operation, EquipmentSlotGroup slotGroup) {
     apiError();
     return ItemAttributeModifiers.EMPTY;
@@ -322,14 +321,13 @@ public final class CuriosApi {
    *
    * @param stack     The ItemStack to add the modifier to
    * @param attribute The attribute to add the modifier onto
-   * @param name      The name for the modifier
-   * @param uuid      A UUID associated with the modifier
+   * @param id        The unique id associated with the modifier
    * @param amount    The amount of the modifier
    * @param operation The operation of the modifier
    * @param slot      The slot that the ItemStack provides the modifier from
    */
-  public static void addModifier(ItemStack stack, Holder<Attribute> attribute, String name,
-                                 UUID uuid, double amount, AttributeModifier.Operation operation,
+  public static void addModifier(ItemStack stack, Holder<Attribute> attribute, ResourceLocation id,
+                                 double amount, AttributeModifier.Operation operation,
                                  String slot) {
     apiError();
   }
@@ -389,9 +387,9 @@ public final class CuriosApi {
    * @param slotContext The SlotContext to base the UUID on
    * @return The UUID based on the SlotContext
    */
-  public static UUID getSlotUuid(SlotContext slotContext) {
+  public static ResourceLocation getSlotId(SlotContext slotContext) {
     apiError();
-    return UUID.randomUUID();
+    return ResourceLocation.fromNamespaceAndPath("curios", "random/" + UUID.randomUUID().toString().toLowerCase(Locale.ROOT).substring(0, 8));
   }
 
   /**
@@ -429,7 +427,7 @@ public final class CuriosApi {
   @Nonnull
   public static ResourceLocation getSlotIcon(String id) {
     return CuriosApi.getSlot(id, true).map(ISlotType::getIcon)
-        .orElse(new ResourceLocation(CuriosApi.MODID, "slot/empty_curio_slot"));
+        .orElse(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "slot/empty_curio_slot"));
   }
 
   /**

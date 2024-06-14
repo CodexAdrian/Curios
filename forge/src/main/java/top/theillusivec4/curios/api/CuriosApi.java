@@ -430,7 +430,7 @@ public final class CuriosApi {
   @Nonnull
   public static ResourceLocation getSlotIcon(String id) {
     return CuriosApi.getSlot(id, true).map(ISlotType::getIcon)
-        .orElse(new ResourceLocation(CuriosApi.MODID, "slot/empty_curio_slot"));
+        .orElse(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "slot/empty_curio_slot"));
   }
 
   /**
