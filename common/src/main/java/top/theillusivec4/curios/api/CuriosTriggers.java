@@ -28,6 +28,12 @@ import net.minecraft.advancements.critereon.LocationPredicate;
 
 public class CuriosTriggers {
 
+  /**
+   * Builds a new {@link EquipBuilder} for data generation using the trigger that fires when a
+   * curio item is equipped
+   *
+   * @return A new builder instance
+   */
   @Nonnull
   public static EquipBuilder equip() {
     return new EquipBuilder();

@@ -25,6 +25,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
+/**
+ * Used in data generation to represent the entities data
+ */
 public interface IEntitiesData {
 
   IEntitiesData replace(boolean replace);

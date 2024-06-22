@@ -25,12 +25,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.util.ExtraCodecs;
 
+/**
+ * Matches a filter of slots and indices to a particular {@link SlotContext}
+ *
+ * @param slots The list of slots to match against
+ * @param index The list of indices in matching slots to match against
+ */
 public record SlotPredicate(List<String> slots, MinMaxBounds.Ints index) {
 
   public static final Codec<SlotPredicate> CODEC = RecordCodecBuilder.create(

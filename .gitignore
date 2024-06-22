@@ -22,3 +22,5 @@ build
 eclipse
 run
 runs
+.cache
+*/src/generated/resources/data/curiostest/

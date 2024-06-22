@@ -38,6 +38,10 @@ public class CuriosCapability {
   public static final EntityCapability<ICuriosItemHandler, Void> INVENTORY =
       EntityCapability.createVoid(ID_INVENTORY, ICuriosItemHandler.class);
 
+  /**
+   * A wrapper capability based on {@link IItemHandler} to provide access to curios inventory
+   * without any dependency
+   */
   public static final EntityCapability<IItemHandler, Void> ITEM_HANDLER =
       EntityCapability.createVoid(ID_ITEM_HANDLER, IItemHandler.class);
 

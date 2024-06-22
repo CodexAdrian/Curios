@@ -20,6 +20,10 @@
 
 package top.theillusivec4.curios.mixin;
 
+import com.mojang.datafixers.DSL;
+import com.mojang.datafixers.schemas.Schema;
+import com.mojang.datafixers.types.templates.TypeTemplate;
+import com.mojang.datafixers.util.Pair;
 import java.util.Map;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +31,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,12 +41,33 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.ArrayUtils;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class CuriosUtilMixinHooks {
+
+  public static Pair<String, TypeTemplate>[] attachDataFixer(Schema schema,
+                                                             Pair<String, TypeTemplate>[] original) {
+    return ArrayUtils.add(original,
+        Pair.of("ForgeCaps",
+            DSL.optionalFields("curios:inventory",
+                DSL.optionalFields("Curios",
+                    DSL.list(
+                        DSL.optionalFields("StacksHandler",
+                            DSL.optionalFields("Stacks",
+                                DSL.optionalFields("Items",
+                                    DSL.list(References.ITEM_STACK.in(schema))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ));
+  }
 
   public static boolean canNeutralizePiglins(LivingEntity livingEntity) {
     return CuriosApi.getCuriosInventory(livingEntity).map(handler -> {

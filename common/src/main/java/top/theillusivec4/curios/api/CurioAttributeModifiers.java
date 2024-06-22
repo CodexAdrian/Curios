@@ -34,6 +34,13 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import top.theillusivec4.curios.CuriosConstants;
 
+/**
+ * A record used for data component representation of curio attribute modifiers
+ *
+ * @param modifiers     The attribute modifiers
+ * @param showInTooltip Whether to show in tooltips
+ * @see net.minecraft.world.item.component.ItemAttributeModifiers
+ */
 public record CurioAttributeModifiers(List<Entry> modifiers, boolean showInTooltip) {
   public static final CurioAttributeModifiers EMPTY = new CurioAttributeModifiers(List.of(), true);
   private static final Codec<CurioAttributeModifiers> FULL_CODEC = RecordCodecBuilder.create(

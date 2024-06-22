@@ -22,7 +22,11 @@ package top.theillusivec4.curios.common.inventory;
 
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -115,5 +119,39 @@ public class DynamicStackHandler extends ItemStackHandler implements IDynamicSta
       newList.set(i, stacks.get(i));
     }
     return newList;
+  }
+
+  @Override
+  public CompoundTag serializeNBT(HolderLookup.Provider lookup) {
+    ListTag nbtTagList = new ListTag();
+
+    for (int i = 0; i < stacks.size(); i++) {
+
+      if (!stacks.get(i).isEmpty()) {
+        CompoundTag itemTag = new CompoundTag();
+        itemTag.putInt("Slot", i);
+        nbtTagList.add(stacks.get(i).save(lookup, itemTag));
+      }
+    }
+    CompoundTag nbt = new CompoundTag();
+    nbt.put("Items", nbtTagList);
+    nbt.putInt("Size", stacks.size());
+    return nbt;
+  }
+
+  @Override
+  public void deserializeNBT(HolderLookup.Provider lookup, CompoundTag nbt) {
+    setSize(nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : stacks.size());
+    ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
+
+    for (int i = 0; i < tagList.size(); i++) {
+      CompoundTag itemTags = tagList.getCompound(i);
+      int slot = itemTags.getInt("Slot");
+
+      if (slot >= 0 && slot < stacks.size()) {
+        ItemStack.parse(lookup, itemTags).ifPresent(stack -> stacks.set(slot, stack));
+      }
+    }
+    onLoad();
   }
 }

@@ -36,6 +36,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import top.theillusivec4.curios.api.type.data.IEntitiesData;
 import top.theillusivec4.curios.api.type.data.ISlotData;
 
+/**
+ * Basic data generator for curios slots and entities
+ */
 public abstract class CuriosDataProvider implements DataProvider {
   private final PackOutput.PathProvider entitiesPathProvider;
   private final PackOutput.PathProvider slotsPathProvider;

@@ -20,12 +20,17 @@
 
 package top.theillusivec4.curios.platform.services;
 
+import java.util.Map;
+import javax.annotation.Nullable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.type.ISlotType;
 
 public interface ICuriosPlatform {
+
+  Map<String, ISlotType> getItemStackSlots(ItemStack stack, @Nullable LivingEntity livingEntity);
 
   boolean makesPiglinsNeutral(ItemStack stack, LivingEntity livingEntity);
 

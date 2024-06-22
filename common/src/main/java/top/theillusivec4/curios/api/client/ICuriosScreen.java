@@ -20,5 +20,9 @@
 
 package top.theillusivec4.curios.api.client;
 
+/**
+ * Used for Curios GUI implementations as identification for third-party mods without referencing
+ * the implementation directly
+ */
 public interface ICuriosScreen {
 }
